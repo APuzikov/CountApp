@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Class-Path: spring-aop-5.0.7.RELEASE.jar jackson-datatype-jdk8-2.9.6.j
+ ar validation-api-2.0.1.Final.jar spring-boot-starter-tomcat-2.0.3.RE
+ LEASE.jar jackson-core-2.9.6.jar spring-context-5.0.7.RELEASE.jar jso
+ n-path-3.1.0.jar rest-assured-3.1.0.jar junit-4.12.jar spring-beans-5
+ .0.7.RELEASE.jar jaxb-api-2.2.12.jar spring-jcl-5.0.7.RELEASE.jar jul
+ -to-slf4j-1.7.25.jar rest-assured-common-3.1.0.jar spring-boot-autoco
+ nfigure-2.0.3.RELEASE.jar hamcrest-library-1.3.jar spring-boot-starte
+ r-logging-2.0.3.RELEASE.jar groovy-json-2.4.12.jar bsh-2.0b6.jar slf4
+ j-api-1.7.25.jar httpcore-4.4.6.jar commons-logging-1.2.jar groovy-xm
+ l-2.4.12.jar tomcat-embed-core-8.5.31.jar spring-boot-starter-web-2.0
+ .3.RELEASE.jar tomcat-annotations-api-8.5.31.jar commons-codec-1.9.ja
+ r jackson-module-parameter-names-2.9.6.jar commons-lang3-3.4.jar clas
+ smate-1.3.4.jar javax.annotation-api-1.3.2.jar spring-core-5.0.7.RELE
+ ASE.jar hamcrest-core-1.3.jar tagsoup-1.2.1.jar jackson-datatype-jsr3
+ 10-2.9.6.jar snakeyaml-1.19.jar testng-6.14.3.jar tomcat-embed-el-8.5
+ .31.jar spring-expression-5.0.7.RELEASE.jar spring-web-5.0.7.RELEASE.
+ jar xml-path-3.1.0.jar httpclient-4.5.3.jar logback-classic-1.2.3.jar
+  logback-core-1.2.3.jar jackson-databind-2.9.6.jar spring-boot-starte
+ r-json-2.0.3.RELEASE.jar tomcat-embed-websocket-8.5.31.jar groovy-2.4
+ .12.jar httpmime-4.5.1.jar log4j-to-slf4j-2.10.0.jar jcommander-1.72.
+ jar spring-boot-starter-2.0.3.RELEASE.jar jackson-annotations-2.9.0.j
+ ar hibernate-validator-6.0.10.Final.jar spring-boot-2.0.3.RELEASE.jar
+  jboss-logging-3.3.2.Final.jar spring-webmvc-5.0.7.RELEASE.jar log4j-
+ api-2.10.0.jar
+Main-Class: ru.mera.count.CountApp
+
