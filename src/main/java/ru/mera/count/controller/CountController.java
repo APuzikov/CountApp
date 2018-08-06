@@ -86,23 +86,33 @@ public class CountController extends Loggable{
 
 		Map<String, Integer> requestCount = storage.getRequestCount();
 
-
 		if (body.getGet() == null) {
 			model.setGet(requestCount.get("get"));
-		} else model.setGet(body.getGet());
+		} else {
+			model.setGet(body.getGet());
+			storage.getRequestCount().put("get", body.getGet());
+		}
 
 		if (body.getPost() == null){
 			model.setPost(requestCount.get("post"));
-		} else model.setPost(body.getPost());
+		} else {
+			model.setPost(body.getPost());
+			storage.getRequestCount().put("post", body.getPost());
+		}
 
 		if (body.getPut() == null){
 			model.setPut(requestCount.get("put"));
-		} else model.setPut(body.getPut());
+		} else {
+			model.setPut(body.getPut());
+			storage.getRequestCount().put("put", body.getPut());
+		}
 
 		if (body.getDelete() == null){
 			model.setDelete(requestCount.get("delete"));
-		} else model.setDelete(body.getDelete());
-
+		} else {
+			model.setDelete(body.getDelete());
+			storage.getRequestCount().put("delete", body.getDelete());
+		}
 		return model;
 	}
 }

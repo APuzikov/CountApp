@@ -3,20 +3,16 @@ package ru.mera.count.controller;
 import org.junit.Test;
 import org.springframework.util.Assert;
 import ru.mera.count.model.CountWrapper;
-import ru.mera.count.model.StorageModel;
 import ru.mera.count.model.WhoModel;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import static io.restassured.RestAssured.form;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 
 public class CountControllerTest extends ControllerTestConstant{
 
@@ -119,56 +115,51 @@ public class CountControllerTest extends ControllerTestConstant{
 	}
 
 	@Test
-	public void test_setStat(){
-		ExecutorService executorService = Executors.newFixedThreadPool(100);
+	public void test_multiThreading(){
+		ExecutorService executorService = Executors.newFixedThreadPool(300);
 
-		for (int i = 0; i < 100; i++) {
-			Future<CountWrapper> result = executorService.submit(new PutRequest());
-			try {
-				System.out.println(result.get().getCount());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+		for (int i = 0; i < 110; i++) {
+			executorService.submit(new PutRequest());
 		}
 
-		try {
-			Thread.sleep(1000);
-			System.out.println("Sleep 1 sec ---------------------------------");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		sleep(1000);
+
+		for (int i = 0; i < 110; i++){
+			executorService.submit(new GetRequest());
 		}
 
-		for (int i = 0; i < 100; i++){
-			Future<CountWrapper> result = executorService.submit(new GetRequest());
-			try {
-				System.out.println(result.get().getCount());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+		sleep(1000);
+
+		for (int i = 0; i < 110; i++){
+			executorService.submit(new PostRequest());
 		}
 
-		try {
-			Thread.sleep(1000);
-			System.out.println("Sleep 1 sec ---------------------------------");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		for (int i = 0; i < 100; i++){
-			Future<CountWrapper> result = executorService.submit(new PostRequest());
-			try {
-				System.out.println(result.get().getCount());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
 		executorService.shutdown();
+		try {
+			executorService.awaitTermination(60, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+//		try {
+//			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+//				executorService.shutdownNow(); // Cancel currently executing tasks
+//				if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+//					System.err.println("Pool did not terminate");
+//			}
+//		} catch (InterruptedException ie) {
+//			executorService.shutdownNow();
+//			Thread.currentThread().interrupt();
+//		}
+	}
+
+	private void sleep(int ms){
+		try {
+			Thread.sleep(ms);
+			System.out.println("Sleep  " + ms + "  milliseconds");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	static class PutRequest implements Callable<CountWrapper>{
@@ -187,6 +178,8 @@ public class CountControllerTest extends ControllerTestConstant{
 							when().
 							put(countUrl + "/count/plus/{delta}").as(CountWrapper.class);
 
+			System.out.println(Thread.currentThread().getName() + "  -----  " + result.getCount() + "   PUT request");
+
 			Assert.notNull(result, "result is null");
 			Assert.notNull(result.getTimestamp(), "timeStamp is empty");
 			Assert.isTrue(result.getCount() - before.getCount() == delta, "wrong result");
@@ -202,6 +195,7 @@ public class CountControllerTest extends ControllerTestConstant{
 							when().
 							get(countUrl + "/count").as(CountWrapper.class);
 
+			System.out.println(Thread.currentThread().getName() + "  -----  " + result.getCount() + "   GET request");
 			Assert.notNull(result, "result is null");
 			Assert.notNull(result.getTimestamp(), "timeStamp is empty");
 			return result;
@@ -238,6 +232,7 @@ public class CountControllerTest extends ControllerTestConstant{
 							when().
 							get(countUrl + "/count").as(CountWrapper.class);
 
+			System.out.println(Thread.currentThread().getName() + "  -----  " + result.getCount() + "   POST request");
 			Assert.notNull(testResult, "result is null");
 			Assert.notNull(testResult.getTimestamp(), "timeStamp is empty");
 			Assert.isTrue(result.getCount() == testResult.getCount(), "wrong result");
